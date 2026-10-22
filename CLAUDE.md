@@ -40,7 +40,7 @@ Rules:
 - Python 3.11+, uv for packages and the environment
 - LLM: local Ollama model `spark-local` (4.1B, Q8_0, num_ctx 32768), called through Ollama's native API at `http://localhost:11434` with `httpx`. No API key or cost; "cost" = tokens × a reference API price. Never send raw HTML (it doesn't fit the context).
 - Embeddings: `sentence-transformers`, run locally (no API cost)
-- Others: `httpx`, `beautifulsoup4`, `extruct`, `pydantic`, `tiktoken`, `numpy`
+- Others: `httpx`, `beautifulsoup4`, `pydantic`, `tiktoken`, `numpy` (JSON-LD is read with bs4 + `json`; no `extruct`)
 - Fetch each store page once and save it under `data/`. Never re-fetch in loops.
 
 ## Repo layout
@@ -92,4 +92,4 @@ Checkpoint: Why test the full agent? What would make the comparison unfair? What
 
 ## Current status
 
-Day 1, Step 2 — done. Raw HTML 3.38M → plain text 30K tokens (tiktoken); spark-local counts 37.8K (tiktoken −20%). ~8 s/page locally. Bose + Snitch are JS-rendered edge cases (kept). Next: Day 1, Step 3 (Method A: JSON-LD, no AI).
+Day 1, Step 3 — done. `shrinker/method_a.py` (Method A, JSON-LD → FactCard): Mokobara full, Blue Tokai no variant names, Bose 1 of 6-7 variants, Snitch none. Next: Step 4, Method B (clean text → `spark-local` fills FactCard; thinking off).
