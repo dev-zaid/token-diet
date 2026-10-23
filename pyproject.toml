@@ -3,5 +3,8 @@ name = "token-diet"
 version = "0.1.0"
 requires-python = ">=3.12"
 dependencies = [
+    "beautifulsoup4>=4.15.0",
     "httpx>=0.28.1",
+    "pydantic>=2.14.1",
+    "tiktoken>=0.14.0",
 ]

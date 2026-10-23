@@ -38,9 +38,9 @@ Rules:
 ## Stack
 
 - Python 3.11+, uv for packages and the environment
-- LLM: DeepSeek through the `openai` client (DeepSeek's API is OpenAI-compatible). Key in `.env` as `DEEPSEEK_API_KEY`; never commit `.env`.
+- LLM: local Ollama model `spark-local` (4.1B, Q8_0, num_ctx 32768), called through Ollama's native API at `http://localhost:11434` with `httpx`. No API key or cost; "cost" = tokens × a reference API price. Never send raw HTML (it doesn't fit the context).
 - Embeddings: `sentence-transformers`, run locally (no API cost)
-- Others: `httpx`, `beautifulsoup4`, `extruct`, `pydantic`, `tiktoken`, `numpy`
+- Others: `httpx`, `beautifulsoup4`, `pydantic`, `tiktoken`, `numpy` (JSON-LD is read with bs4 + `json`; no `extruct`)
 - Fetch each store page once and save it under `data/`. Never re-fetch in loops.
 
 ## Repo layout
@@ -60,9 +60,9 @@ token-diet/
 ### Day 1 — Page Shrinker
 
 1. Collect 20 product pages from 3–4 public Shopify stores. Save the HTML and `/products/<handle>.json` (the answer key).
-2. Count tokens: raw HTML vs plain text. Compare with DeepSeek's reported usage (`tiktoken` is only an estimate).
+2. Count tokens: raw HTML vs plain text. Compare with the local model's reported usage (`tiktoken` is only an estimate).
 3. Method A, no AI: read the JSON-LD product data in the page.
-4. Method B, AI: clean text → DeepSeek fills a Pydantic card.
+4. Method B, AI: clean text → local model fills a Pydantic card.
 5. Score each method against the answer key: tokens, cost, accuracy.
 
 Checkpoint: Why count tokens, not characters? When is no-AI enough? What breaks without an answer key?
@@ -80,7 +80,7 @@ Checkpoint: What does an embedding capture and miss? Why did opposite tools get 
 
 ### Day 3 — Test together and publish
 
-1. Mini agent (~80 lines): DeepSeek tool calling plus a fake store built from Day 1 data.
+1. Mini agent (~80 lines): local model tool calling plus a fake store built from Day 1 data.
 2. Write 10–15 shopping tasks, each with a known correct final cart.
 3. Run each task twice per setup. No diet: all tools + page text. Diet: picked tools + fact cards.
 4. Compare tokens per task, cost per task, and correct carts.
@@ -92,4 +92,4 @@ Checkpoint: Why test the full agent? What would make the comparison unfair? What
 
 ## Current status
 
-Day 1, Step 1 — done (20 products in `data/`, gitignored; rebuild with `collect.py`). Next: Day 1, Step 2 (count tokens).
+Day 1 — done (Steps 1-5 + checkpoint). Method A (JSON-LD) beat Method B (local model) on every page, at $0; B's misses came from `html_to_text` dropping the `<script>` data. Next: merge `day-1` into `main`, then Day 2, Step 1 (tool definitions).
