@@ -1,18 +1,17 @@
 """Day 1, Step 3, Method A (no AI): fill a fact card from the page's JSON-LD."""
 
 import json
-from os import name
 from pathlib import Path
 
 from bs4 import BeautifulSoup
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 DATA = Path(__file__).resolve().parent.parent / "data"
 
 
 class Variant(BaseModel):
     name: str | None = None  # Blue Tokai / Bose offers don't name their variant
-    price: float  # "3799.00" (Mokobara) and 800.0 (Blue Tokai) both become a float
+    price: float | None  # "3799.00" (Mokobara) and 800.0 (Blue Tokai) both become a float
     in_stock: bool | None = None
 
 
@@ -20,8 +19,8 @@ class FactCard(BaseModel):
     name: str
     currency: str | None = None
     variants: list[Variant]
-    shipping: str | None = None
-    returns: str | None = None
+    shipping: str | None = Field(default=None, max_length=80)
+    returns: str | None = Field(default=None, max_length=80)
 
 
 def jsonld_blocks(html: str) -> list[dict]:

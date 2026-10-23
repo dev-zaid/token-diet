@@ -92,4 +92,4 @@ Checkpoint: Why test the full agent? What would make the comparison unfair? What
 
 ## Current status
 
-Day 1, Step 3 — done. `shrinker/method_a.py` (Method A, JSON-LD → FactCard): Mokobara full, Blue Tokai no variant names, Bose 1 of 6-7 variants, Snitch none. Next: Step 4, Method B (clean text → `spark-local` fills FactCard; thinking off).
+Day 1, Step 4 — done. `shrinker/method_b.py` (Method B, `spark-local` + FactCard schema as `format`): prices right on Mokobara + most Blue Tokai; Mokobara 1 variant each (rest not in text); Bose/Snitch empty (JS pages); Kolli Berri subscription in paise (×100); `in_stock` unreliable. Next: Step 5, score A vs B against the answer key (tokens, cost, accuracy).
