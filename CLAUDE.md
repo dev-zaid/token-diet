@@ -92,4 +92,4 @@ Checkpoint: Why test the full agent? What would make the comparison unfair? What
 
 ## Current status
 
-Day 1, Step 4 — done. `shrinker/method_b.py` (Method B, `spark-local` + FactCard schema as `format`): prices right on Mokobara + most Blue Tokai; Mokobara 1 variant each (rest not in text); Bose/Snitch empty (JS pages); Kolli Berri subscription in paise (×100); `in_stock` unreliable. Next: Step 5, score A vs B against the answer key (tokens, cost, accuracy).
+Day 1 — done (Steps 1-5 + checkpoint). Method A (JSON-LD) beat Method B (local model) on every page, at $0; B's misses came from `html_to_text` dropping the `<script>` data. Next: merge `day-1` into `main`, then Day 2, Step 1 (tool definitions).
